@@ -46,6 +46,14 @@ parser.add_option("--disable-rearrange",
                   dest="disable_rearrange",
                   action="store_true",
                   help="Disable the rearrangement of windows when the master window disappears.")
+parser.add_option("-m",
+                  "--mfact",
+                  dest="mfact",
+                  action="store",
+                  metavar='1..99',
+                  type="int",
+                  help="Set width of the master window in percentage.",
+)
 (options, args) = parser.parse_args()
 
 
@@ -142,11 +150,31 @@ def on_window_focus(c, e):
         c.command("[con_id=%d] layout %s" % (last.id, layout))
 
 
+def on_window(c, e):
+    focused_window = grab_focused(c)
+
+    if focused_window is None:
+        return
+
+    percentage = options.mfact
+
+    if percentage is None:
+        return
+
+    screen_width = c.get_outputs()[0].rect.width
+    new_width = (percentage / 100) * screen_width
+
+    c.command(
+        f"[con_id=%d] resize set %dpx" % (focused_window.workspace().nodes[0].id, new_width)
+    )
+
+
 def main():
     c = Connection()
     c.on(Event.WINDOW_FOCUS, on_window_focus)
     c.on(Event.WINDOW_NEW, on_window_new)
-
+    c.on(Event.WINDOW, on_window)
+    
     try:
         c.main()
     except BaseException as e:
