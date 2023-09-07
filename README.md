@@ -17,6 +17,8 @@
 
 * if master window disappears, get new master from stack (does only really work if you don't break the 2 column layout)
 
+* set master window width in percentage of your monitor
+
 ![master-layout](./i3-master-layout-example.gif)
 
 ## Install
@@ -58,6 +60,9 @@ Options:
                         default: splitv
   --disable-rearrange   Disable the rearrangement of windows when the master
                         window disappears.
+
+  -m 1..99, --mfact=1..99
+                        Set width of the master window in percentage.
 ```
 
 ## TODO
