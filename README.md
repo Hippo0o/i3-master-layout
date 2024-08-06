@@ -50,6 +50,7 @@ Options:
                         List of workspaces that should be ignored.
   -o HDMI-0,DP-0,.. , --outputs=HDMI-0,DP-0,.. 
                         List of outputs that should be used instead of all.
+  -s, --swap-new        Swap new windows with master.
   -n, --nested          Also move new windows which are created in nested
                         containers.
   -l LAYOUT, --stack-layout=LAYOUT
