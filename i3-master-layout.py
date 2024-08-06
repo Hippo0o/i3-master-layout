@@ -25,6 +25,11 @@ parser.add_option("-o",
                   callback=get_comma_separated_args,
                   metavar="HDMI-0,DP-0,.. ",
                   help="List of outputs that should be used instead of all.")
+parser.add_option("-s",
+                  "--swap-new",
+                  dest="swap_new",
+                  action="store_true",
+                  help="Swap new windows with master.")
 parser.add_option("-n",
                   "--nested",
                   dest="move_nested",
@@ -101,6 +106,10 @@ def on_window_new(c, e):
 
     # new window gets moved behind last window found
     move_window(c, new_window, find_last(new_window.workspace()))
+
+    # swap new windows with first node of workspace(master window)
+    if options.swap_new:
+        c.command("[con_id=%d] swap container with con_id %d" % (new_window.id, new_window.workspace().nodes[0].id))
 
 
 def on_window_focus(c, e):
